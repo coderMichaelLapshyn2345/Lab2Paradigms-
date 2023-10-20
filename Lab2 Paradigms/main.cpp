@@ -22,7 +22,7 @@ public:
         shuffle(sequence.begin(), sequence.end(), g);
         int result = 0;
         for (int i = 0; i < n_; ++i) {
-            result += sequence[i] * (i + 1); // Розраховуємо скалярний добуток.
+            result += sequence[i] * (i + 1); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         }
         return result;
     }
@@ -82,5 +82,4 @@ int main(){
         out.close();
     }
     
-    return 0;
-}
+
