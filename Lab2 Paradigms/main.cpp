@@ -7,24 +7,25 @@
 #include <cstdlib>
 #include <fstream>
 #include <string>
+#define EXIT_OK 0
+#define EXIT_ERROR -100
 using namespace std;
-
 class RandomPermutation {
 public:
     RandomPermutation(int n) : n_(n) {
         sequence.resize(n);
         iota(sequence.begin(), sequence.end(), 1);
     }
-    void shuffle() {
-        std::random_device rd;
-        std::mt19937 g(rd());
-        std::shuffle(vector.begin(), vector.end(), g);  // Змішуємо вектор для генерації випадкової перестановки
+    void generateRandom() {
+        random_device rd;
+        mt19937 g(rd());
+        std::shuffle(sequence.begin(), sequence.end(), g);  // Змішуємо вектор для генерації випадкової перестановки
     }
     int operator()() {
-        shuffle();
+        generateRandom();
         int result = 0;
         for (int i = 0; i < n_; ++i) {
-            result += sequence[i] * (i + 1); // ����������� ��������� �������.
+            result += sequence[i] * (i + 1);
         }
         return result;
     }
@@ -34,6 +35,9 @@ private:
 };
 
 int MaxScalarProduct(int n, int numPermutations, vector<int>& scalarProducts) {
+    if(n < 0){
+        return EXIT_ERROR;
+    }
     int maxScalarProduct = 0;
     RandomPermutation permutation(n);
     for (int i = 0; i < numPermutations; ++i) {
@@ -70,19 +74,20 @@ int GetAverageValue(vector<int> seq){
 int main(){
     const string path = "/Users/mykhailolapshyn/Desktop/result.txt";
     ofstream out(path);
+    if(!out){
+        cout << "Error opening file" << endl;
+        return EXIT_FAILURE;
+    }
     srand(static_cast<unsigned int>(time(NULL)));
     int n = 5;
     int numOfPermutation = 6;
     vector<int> scalar_products;
     int max_scalar_product = MaxScalarProduct(n, numOfPermutation, scalar_products);
-//    cout << "Max scalar product: " << max_scalar_product << endl;
-//    cout << "Median: " << searchMedian(scalar_products, numOfPermutation) << endl;
-//    cout << "Arithmetic average: " << GetAverageValue(scalar_products) << endl;
     if(out.is_open()){
         out << "Max scalar product: " << max_scalar_product << '\n';
         out << "Median: " << searchMedian(scalar_products, numOfPermutation) << '\n';
         out << "Arithmetic average: " << GetAverageValue(scalar_products) << '\n';
         out.close();
     }
-    
-
+    return EXIT_OK;
+}
