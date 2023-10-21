@@ -79,8 +79,11 @@ int main(){
         return EXIT_FAILURE;
     }
     srand(static_cast<unsigned int>(time(NULL)));
-    int n = 5;
-    int numOfPermutation = 6;
+    random_device rd;
+    mt19937 mt(rd());
+    uniform_int_distribution<int> dist(5, 50);
+    int n = dist(mt);
+    int numOfPermutation = dist(mt);
     vector<int> scalar_products;
     int max_scalar_product = MaxScalarProduct(n, numOfPermutation, scalar_products);
     if(out.is_open()){
