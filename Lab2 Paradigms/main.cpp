@@ -15,11 +15,13 @@ public:
         sequence.resize(n);
         iota(sequence.begin(), sequence.end(), 1);
     }
-
+    void shuffle() {
+        std::random_device rd;
+        std::mt19937 g(rd());
+        std::shuffle(vector.begin(), vector.end(), g);  // Змішуємо вектор для генерації випадкової перестановки
+    }
     int operator()() {
-        random_device rd;
-        mt19937 g(rd());
-        shuffle(sequence.begin(), sequence.end(), g);
+        shuffle();
         int result = 0;
         for (int i = 0; i < n_; ++i) {
             result += sequence[i] * (i + 1); // ����������� ��������� �������.
@@ -30,6 +32,7 @@ private:
     int n_;
     vector<int> sequence;
 };
+
 int MaxScalarProduct(int n, int numPermutations, vector<int>& scalarProducts) {
     int maxScalarProduct = 0;
     RandomPermutation permutation(n);
