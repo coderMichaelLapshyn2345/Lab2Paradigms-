@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
+
+class RandomPermutation {
+public:
+    RandomPermutation(int n) : n(n) {
+        vector.resize(n);
+        std::iota(vector.begin(), vector.end(), 1);  // Створюємо вектор (1, 2, ..., n)
+        shuffle();  // Генеруємо випадкову перестановку під час створення об'єкта
+    }
+
+    void shuffle() {
+        std::random_device rd;
+        std::mt19937 g(rd());
+        std::shuffle(vector.begin(), vector.end(), g);  // Змішуємо вектор для генерації випадкової перестановки
+    }
+
+    int operator()() {
+        int scalar_product = 0;
+        for (int i = 0; i < n; ++i) {
+            scalar_product += (i + 1) * vector[i];
+        }
+        return scalar_product;
+    }
+
+    const std::vector<int>& getVector() const {
+        return vector;
+    }
+
+private:
+    int n;
+    std::vector<int> vector;
+};
+
+int main() {
+    int n = 5;
+    RandomPermutation random_permutation(n);
+    std::cout << "Випадкова перестановка: ";
+    const std::vector<int>& permutation = random_permutation.getVector();
+    for (int i = 0; i < n; ++i) {
+        std::cout << permutation[i] << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "Скалярний добуток: " << random_permutation() << std::endl;
+
+    return 0;
+}
